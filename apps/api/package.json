@@ -2,7 +2,32 @@
   "name": "@fudma/api",
   "private": true,
   "version": "0.1.0",
+  "description": "NestJS API for FUDMA ODL Sprint 1",
   "scripts": {
-    "dev": "echo 'Scaffold placeholder: initialize NestJS API in Sprint 1 implementation.'"
+    "dev": "TS_NODE_TRANSPILE_ONLY=true ts-node-dev --respawn --files src/main.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/main.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@nestjs/common": "latest",
+    "@nestjs/core": "latest",
+    "@nestjs/jwt": "latest",
+    "@nestjs/passport": "latest",
+    "@nestjs/platform-express": "latest",
+    "bcryptjs": "latest",
+    "class-transformer": "latest",
+    "class-validator": "latest",
+    "passport": "latest",
+    "passport-jwt": "latest",
+    "reflect-metadata": "latest",
+    "rxjs": "latest"
+  },
+  "devDependencies": {
+    "@types/express": "latest",
+    "@types/node": "latest",
+    "@types/passport-jwt": "latest",
+    "ts-node-dev": "latest",
+    "typescript": "latest"
   }
 }

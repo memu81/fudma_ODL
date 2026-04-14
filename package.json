@@ -8,14 +8,15 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "npm run dev --workspace @fudma/web & npm run dev --workspace @fudma/api",
+    "dev": "concurrently -n web,api -c cyan,magenta \"npm run dev --workspace @fudma/web\" \"npm run dev --workspace @fudma/api\"",
     "dev:web": "npm run dev --workspace @fudma/web",
     "dev:api": "npm run dev --workspace @fudma/api",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "lint": "echo 'Lint commands will be wired per app in implementation phase.'"
+    "lint": "npm run lint --workspace @fudma/web && npm run lint --workspace @fudma/api"
   },
   "devDependencies": {
+    "concurrently": "latest",
     "prisma": "latest",
     "typescript": "latest"
   },
