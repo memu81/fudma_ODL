@@ -43,6 +43,10 @@ export class ApplicationsController {
   @Roles(UserRole.APPLICANT, UserRole.ADMIN, UserRole.STAFF)
   getOne(@Req() req: Request, @Param("applicationNumber") applicationNumber: string) {
     const user = req.user as { sub: string; role: UserRole };
-    return this.applicationsService.getOneByNumber(applicationNumber);
+    return this.applicationsService.getOneByNumber(
+      user.sub,
+      user.role,
+      applicationNumber,
+    );
   }
 }

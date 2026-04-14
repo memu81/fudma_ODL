@@ -1,17 +1,17 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { CreateRemitaPaymentRequestDto } from './remita.dto';
+import { Injectable, Logger } from "@nestjs/common";
+import { InitiateRemitaPaymentDto } from "./remita.dto";
 
 @Injectable()
 export class RemitaService {
   private readonly logger = new Logger(RemitaService.name);
 
-  initiate(payload: CreateRemitaPaymentRequestDto) {
+  initiate(payload: InitiateRemitaPaymentDto) {
     const rrr = `RRR-${Date.now()}`;
     this.logger.log(`Created mock Remita payment for ${payload.applicationId}`);
 
     return {
-      channel: 'REMITA',
-      status: 'PENDING',
+      channel: "REMITA",
+      status: "PENDING",
       rrr,
       amount: payload.amount,
       paymentUrl: `https://remita.example/checkout/${rrr}`,
@@ -22,16 +22,16 @@ export class RemitaService {
   verify(rrr: string) {
     this.logger.log(`Verifying Remita payment ${rrr}`);
     return {
-      channel: 'REMITA',
+      channel: "REMITA",
       rrr,
-      status: 'SUCCESS',
+      status: "SUCCESS",
       paidAt: new Date().toISOString(),
       providerRef: `REM-${Math.floor(Math.random() * 1000000)}`,
     };
   }
 
-  handleWebhook(payload: Record<string, unknown>) {
-    this.logger.log('Received Remita webhook payload');
+  handleWebhook(payload: unknown) {
+    this.logger.log("Received Remita webhook payload");
     return {
       accepted: true,
       payload,

@@ -37,6 +37,14 @@ chmod +x setup.sh
 ./setup.sh
 ```
 
+## Sprint 1 Demo Credentials
+- Applicant login:
+  - `email: applicant@fudma.edu.ng`
+  - `password: Password123!`
+- Admin login:
+  - `email: admin@fudma.edu.ng`
+  - `password: Password123!`
+
 ## Manual Setup Commands
 ```bash
 # 1) Install root/workspace dependencies
@@ -51,6 +59,24 @@ npx prisma generate
 # 4) Run development servers
 npm run dev
 ```
+
+## Sprint 1 API Endpoints (Scaffold)
+- Auth:
+  - `POST /api/v1/auth/register`
+  - `POST /api/v1/auth/login`
+  - `GET /api/v1/auth/profile`
+- Programs:
+  - `GET /api/v1/programs` (public)
+- Applications:
+  - `POST /api/v1/applications/draft`
+  - `PATCH /api/v1/applications/:id/submit`
+  - `GET /api/v1/applications/mine`
+  - `GET /api/v1/applications/admin`
+  - `GET /api/v1/applications/:applicationNumber`
+- Remita:
+  - `POST /api/v1/payments/remita/initiate`
+  - `GET /api/v1/payments/remita/verify/:rrr`
+  - `POST /api/v1/payments/remita/webhook` (public)
 
 ## Reference Docs
 - Architecture & stack rationale: `docs/TECHNICAL_ARCHITECTURE.md`

@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { ApplicationStatus } from "../common/application-status.enum";
 import { CreateApplicationDto } from "./dto/create-application.dto";
 
-interface ApplicationRecord {
+export interface ApplicationRecord {
   id: string;
   applicationNumber: string;
   applicantId: string;
@@ -18,7 +18,7 @@ interface ApplicationRecord {
   updatedAt: string;
 }
 
-type ApplicationSummary = Pick<
+export type ApplicationSummary = Pick<
   ApplicationRecord,
   "id" | "applicationNumber" | "status" | "programId" | "session" | "updatedAt"
 >;
