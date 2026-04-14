@@ -1,0 +1,8 @@
+{
+  "name": "@fudma/api",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "echo 'Scaffold placeholder: initialize NestJS API in Sprint 1 implementation.'"
+  }
+}

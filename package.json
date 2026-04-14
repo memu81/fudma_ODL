@@ -1,0 +1,25 @@
+{
+  "name": "fudma-odl-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "FUDMA ODL platform monorepo scaffold",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace @fudma/web & npm run dev --workspace @fudma/api",
+    "dev:web": "npm run dev --workspace @fudma/web",
+    "dev:api": "npm run dev --workspace @fudma/api",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "lint": "echo 'Lint commands will be wired per app in implementation phase.'"
+  },
+  "devDependencies": {
+    "prisma": "latest",
+    "typescript": "latest"
+  },
+  "dependencies": {
+    "@prisma/client": "latest"
+  }
+}

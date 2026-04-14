@@ -1,0 +1,156 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  APPLICANT
+  STUDENT
+  STAFF
+  ADMIN
+  FINANCE
+}
+
+enum ApplicationStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  OFFERED
+  REJECTED
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  REVERSED
+}
+
+enum PaymentChannel {
+  REMITA
+  PAYSTACK
+}
+
+enum ResultStatus {
+  DRAFT
+  PUBLISHED
+  WITHHELD
+}
+
+model Student {
+  id             String        @id @default(cuid())
+  matricNumber   String?       @unique
+  firstName      String
+  lastName       String
+  middleName     String?
+  email          String        @unique
+  phoneNumber    String        @unique
+  role           UserRole      @default(STUDENT)
+  dateOfBirth    DateTime?
+  isActive       Boolean       @default(true)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  applications   Application[]
+  payments       Payment[]
+  results        Result[]
+}
+
+model Program {
+  id              String        @id @default(cuid())
+  code            String        @unique
+  name            String
+  faculty         String
+  department      String
+  durationInYears Int
+  isActive        Boolean       @default(true)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  courses         Course[]
+  applications    Application[]
+}
+
+model Course {
+  id               String      @id @default(cuid())
+  code             String      @unique
+  title            String
+  creditUnits      Int
+  level            Int
+  semester         Int
+  isCore           Boolean     @default(false)
+  programId        String
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  program          Program     @relation(fields: [programId], references: [id], onDelete: Restrict)
+  results          Result[]
+
+  @@index([programId, level, semester])
+}
+
+model Application {
+  id                String              @id @default(cuid())
+  applicationNumber String              @unique
+  studentId         String
+  programId         String
+  session           String
+  status            ApplicationStatus   @default(DRAFT)
+  submittedAt       DateTime?
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+
+  student           Student             @relation(fields: [studentId], references: [id], onDelete: Restrict)
+  program           Program             @relation(fields: [programId], references: [id], onDelete: Restrict)
+  payments          Payment[]
+
+  @@unique([studentId, programId, session])
+  @@index([status, session])
+}
+
+model Payment {
+  id                 String         @id @default(cuid())
+  studentId          String
+  applicationId      String?
+  reference          String         @unique
+  transactionId      String?        @unique
+  channel            PaymentChannel
+  status             PaymentStatus  @default(PENDING)
+  amount             Decimal        @db.Decimal(12, 2)
+  currency           String         @default("NGN")
+  paidAt             DateTime?
+  providerPayload    Json?
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+
+  student            Student        @relation(fields: [studentId], references: [id], onDelete: Restrict)
+  application        Application?   @relation(fields: [applicationId], references: [id], onDelete: SetNull)
+
+  @@index([studentId, status, createdAt])
+  @@index([applicationId])
+}
+
+model Result {
+  id              String       @id @default(cuid())
+  studentId       String
+  courseId        String
+  session         String
+  semester        Int
+  score           Float
+  grade           String
+  gradePoint      Float
+  status          ResultStatus @default(DRAFT)
+  publishedAt     DateTime?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  student         Student      @relation(fields: [studentId], references: [id], onDelete: Restrict)
+  course          Course       @relation(fields: [courseId], references: [id], onDelete: Restrict)
+
+  @@unique([studentId, courseId, session, semester])
+  @@index([session, semester, status])
+}
